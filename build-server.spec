@@ -18,10 +18,56 @@ BuildArch: noarch
 %define _topdir %(echo $PWD)/rpm
 BuildRoot: %{_topdir}/BUILDROOT
 
-Requires: development
+# Many of these come from the yum 'development' group
+Requires: ant
+Requires: autoconf
+Requires: automake
+Requires: babel
+Requires: binutils
+Requires: bison
+Requires: byacc
+Requires: bzr
+Requires: chrpath
+Requires: cmake
+Requires: crash
+Requires: cscope
+Requires: ctags
+Requires: dejagnu
+Requires: diffstat
+Requires: doxygen
+Requires: elfutils
+Requires: expect
+Requires: flex
+Requires: gcc
+Requires: gcc-c++
+Requires: gcc-gnat
+Requires: gdb
+Requires: gettext
 Requires: git
-Requires(preun): chkconfig
-Requires(post): chkconfig
+Requires: glibc-utils
+Requires: imake
+Requires: indent
+Requires: intltool
+Requires: jpackage-utils
+Requires: kexec-tools
+Requires: latrace
+Requires: libtool
+Requires: lslk
+Requires: ltrace
+Requires: make
+Requires: mercurial
+Requires: nasm
+Requires: patch
+Requires: patchutils
+Requires: pkgconfig
+Requires: rpm-build
+Requires: rpmdevtools
+Requires: rpmlint
+Requires: strace
+Requires: subversion
+Requires: system-rpm-config
+Requires: texinfo
+Requires: valgrind
 
 %description
 Config and scripts to make an Amazon micro image into a build
@@ -31,8 +77,8 @@ server.
 %build
 
 %install
-%{__install} --directory --mode=755 $RPM_BUILD_ROOT/usr/libexec/build-server
-%{__install} --mode=755 %{srcdir}/libexec/build-server/* $RPM_BUILD_ROOT/usr/libexec/build-server/
+%{__install} --directory --mode=755 $RPM_BUILD_ROOT/usr/libexec/build-server/setup
+%{__install} --mode=755 %{srcdir}/libexec/build-server/setup/* $RPM_BUILD_ROOT/usr/libexec/build-server/setup/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
