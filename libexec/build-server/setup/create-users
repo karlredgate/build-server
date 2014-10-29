@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Set up users for build server
+#
+
+function die() {
+    echo "$*" 1>&2
+    exit 1
+}
+
+[ $(id --user) -ne 0 ] && die "Must be root to create users"
+
+function group_exists() {
+    getent group $* > /dev/null 2>&1
+}
+
+function user_exists() {
+    getent passwd $* > /dev/null 2>&1
+}
+
+group_exists build || groupadd build || :
+
+user_exists build || {
+    useradd build -g build -p '$1$FadedFad$R7Jyfdzk5j2RBUA5y3z.z1' --create-home || :
+}
+
+: vim:autoindent
+: vim:expandtab
