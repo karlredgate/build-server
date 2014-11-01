@@ -10,6 +10,9 @@ push: rpm
 	ssh $(SERVER) 'sudo yum update -y *$(PACKAGE)*.rpm'
 	ssh $(SERVER) 'rm -f *$(PACKAGE)*.rpm'
 
+update: rpm
+	sudo yum --enablerepo=epel update -y rpm/RPMS/noarch/build-server-*.noarch.rpm
+
 repo: rpm
 	rm -rf repo
 	mkdir -p repo/Packages

@@ -44,6 +44,7 @@ Requires: git
 Requires: glibc-utils
 Requires: imake
 Requires: indent
+Requires: inotify-tools
 Requires: intltool
 Requires: jpackage-utils
 Requires: jq
