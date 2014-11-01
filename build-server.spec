@@ -60,6 +60,9 @@ Requires: npm
 Requires: patch
 Requires: patchutils
 Requires: pkgconfig
+Requires: protobuf-compiler
+Requires: protobuf-c
+Requires: protobuf-c-devel
 Requires: rpm-build
 Requires: rpmdevtools
 Requires: rpmlint
