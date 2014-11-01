@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# Security group and ssh key is created externally to this script.
+# The AWS keys necessary for this script need to be in:
+# $HOME/.aws/config
+#
+
+json=$RANDOM.json
+
+aws --region us-west-2 ec2 run-instances \
+    --image-id        ami-b5a7ea85 \
+    --instance-type   t2.micro \
+    --count           1 \
+    --key-name        backend \
+    --security-groups backend > $json
+
+# vim:autoindent expandtab sw=4

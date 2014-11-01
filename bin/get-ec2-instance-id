@@ -1,0 +1,6 @@
+#!/usr/bin/ruby
+
+require 'json'
+
+response = JSON.load( STDIN )
+puts response["Instances"][0]["InstanceId"]
