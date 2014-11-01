@@ -15,9 +15,6 @@ Vendor: Karl Redgate
 Packager: Karl Redgate <karl.redgate@gmail.com>
 BuildArch: noarch
 
-%define _topdir %(echo $PWD)/rpm
-BuildRoot: %{_topdir}/BUILDROOT
-
 # Many of these come from the yum 'development' group
 Requires: ant
 Requires: autoconf
@@ -49,6 +46,7 @@ Requires: imake
 Requires: indent
 Requires: intltool
 Requires: jpackage-utils
+Requires: jq
 Requires: kexec-tools
 Requires: latrace
 Requires: libtool
@@ -57,6 +55,7 @@ Requires: ltrace
 Requires: make
 Requires: mercurial
 Requires: nasm
+Requires: npm
 Requires: patch
 Requires: patchutils
 Requires: pkgconfig
@@ -80,15 +79,21 @@ server.
 %{__install} --directory --mode=755 $RPM_BUILD_ROOT/usr/libexec/build-server/setup
 %{__install} --mode=755 %{srcdir}/libexec/build-server/setup/* $RPM_BUILD_ROOT/usr/libexec/build-server/setup/
 
+%{__install} --directory --mode=755 $RPM_BUILD_ROOT/usr/bin
+%{__install} --mode=755 %{srcdir}/bin/* $RPM_BUILD_ROOT/usr/bin/
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,0755)
+/usr/bin/create-server
+/usr/bin/get-ec2-instance-id
 /usr/libexec/build-server/
 
 %pre
-/usr/libexec/build-server/setup/create-users
+# create users here that are required for the installation of files in
+# this package.
 
 %post
 [ "$1" -gt 1 ] && {
@@ -99,6 +104,7 @@ rm -rf $RPM_BUILD_ROOT
     : New install
 }
 
+/usr/libexec/build-server/setup/create-users
 /usr/libexec/build-server/setup/install-node-syslog | logger --tag %{name}
 
 : ignore test return value
@@ -120,7 +126,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 
-* Fri Sep 12 2014 Karl Redgate <redgates..com>
+* Fri Oct 31 2014 Karl Redgate <redgates.com>
 - Initial release
 
 # vim:autoindent expandtab sw=4

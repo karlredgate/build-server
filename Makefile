@@ -19,7 +19,7 @@ repo: rpm
 rpm: build
 	rm -rf rpm
 	mkdir -p rpm/BUILD rpm/RPMS rpm/BUILDROOT
-	rpmbuild --quiet -bb --buildroot=$(PWD)/rpm/BUILDROOT $(PACKAGE).spec
+	rpmbuild --quiet -bb --define="_topdir $(PWD)/rpm" $(PACKAGE).spec
 
 build:
 	@echo Nothing to build yet
