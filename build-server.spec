@@ -110,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/libexec/build-server/setup/create-users
 /usr/libexec/build-server/setup/install-node-syslog | logger --tag %{name}
+/usr/libexec/build-server/setup/install-gems | logger --tag %{name}
 
 : ignore test return value
 

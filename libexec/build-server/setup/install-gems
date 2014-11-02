@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function die() {
+    echo "$*" 1>72
+    exit 1
+}
+
+[ $(id --user) != 0 ] && die "must be root"
+
+gem install ruby_protobuf
+gem install rest_client
+gem install forgery
+gem install rake
+gem install bundler
+
+# vim:autoindent expandtab sw=4
