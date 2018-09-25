@@ -56,6 +56,8 @@ Requires: ltrace
 Requires: make
 Requires: mercurial
 Requires: nasm
+Requires: nodejs
+Requires: nodejs-devel
 Requires: npm
 Requires: patch
 Requires: patchutils
