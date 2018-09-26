@@ -4,14 +4,101 @@
 # The AWS keys necessary for this script need to be in:
 # $HOME/.aws/config
 #
+# References:
+#  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html
+#  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-linux-ami-basics.html
+#  * https://aws.amazon.com/amazon-linux-ami/
+#  * https://aws.amazon.com/amazon-linux-ami/
+#  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html
 
-json=$RANDOM.json
+function die() {
+    echo $* 1>&2
+    exit 1
+}
 
-aws --region us-west-2 ec2 run-instances \
-    --image-id        ami-b5a7ea85 \
-    --instance-type   t2.micro \
-    --count           1 \
-    --key-name        backend \
-    --security-groups backend > $json
+function linux_ami() {
+    aws --region us-east-1 ec2 describe-images \
+	--owners amazon \
+	--filters 'Name=name,Values=amzn-ami-hvm-????.??.?.????????-x86_64-gp2' \
+	          'Name=state,Values=available' | \
+	jq -r '.Images | sort_by(.CreationDate) | last(.[]).ImageId'
+}
+
+function linux2_ami() {
+    aws ec2 describe-images \
+	--owners amazon \
+	--filters 'Name=name,Values=amzn2-ami-hvm-2.0.????????-x86_64-gp2' \
+	          'Name=state,Values=available' | \
+	jq -r '.Images | sort_by(.CreationDate) | last(.[]).ImageId'
+}
+
+function ubuntu_ami() {
+    aws ec2 describe-images \
+	--owners 099720109477 \
+	--filters 'Name=name,Values=ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-????????' \
+	          'Name=state,Values=available' | \
+	jq -r '.Images | sort_by(.CreationDate) | last(.[]).ImageId'
+}
+
+# Find the security group by its name.  There should only be
+# one security group with this name.
+#
+function devops_sg_id() {
+    aws ec2 describe-security-groups --filters 'Name=group-name,Values=devops-sg' | \
+    jq -r .SecurityGroups[0].GroupId
+}
+
+function devops_subnet_id() {
+    aws ec2 describe-subnets --filters 'Name=tag:Service,Values=DevOps' | \
+    jq -r '.Subnets[0].SubnetId'
+}
+
+# Cannot use both of these at the same time
+# --subnet-id       $SUBNET               \
+# --security-groups DRaaS                 \
+#
+# When you use security-group-ids (which you need to do to use a VPC
+# security group) you also must provide a subnet-id
+#
+# aws --region us-east-1 
+
+function start_ec2() {
+    local INIT=https://raw.githubusercontent.com/karlredgate/build-server/master/cloud-init
+    local AMI=$( linux_ami )
+    local SUBNET=$( devops_subnet_id )
+    local GROUP=$( devops_sg_id )
+
+    aws ec2 run-instances                        \
+        --image-id            $AMI               \
+        --count               1                  \
+        --instance-type       t2.micro           \
+        --key-name            kredgate           \
+        --user-data           $INIT              \
+        --security-group-ids  $GROUP             \
+        --subnet-id           $SUBNET            \
+        --iam-instance-profile Name=build-server \
+        || die "Failed to create EC2 instance"
+}
+
+function add_tag() {
+    local resource=$1
+    local key=$2
+    local value="$3"
+
+    aws ec2 create-tags --resources $resource --tags "Key=$key,Value=$value"
+}
+
+function main() {
+    # I want to import a keypair
+
+    id=$( start_ec2 | jq -r .Instances[0].InstanceId )
+
+    add_tag $id Name BuildServer
+    add_tag $id Project DevOps
+
+    echo $id
+}
+
+main "$@"
 
 # vim:autoindent expandtab sw=4
