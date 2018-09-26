@@ -95,6 +95,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,0755)
 /usr/bin/create-server
 /usr/bin/get-ec2-instance-id
+/usr/bin/get-security-group
+/usr/bin/get-server-address
 /usr/libexec/build-server/
 
 %pre
