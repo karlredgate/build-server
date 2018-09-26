@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Look for the public IP of the new instance - so we
+# can add it to ssh config.
+#
+
+function die() {
+    echo $* 1>&2
+    exit 1
+}
+
+function instance_state() {
+    local instance=$1
+
+    aws ec2 describe-instances --instance-ids $instance | \
+    jq -r '.Reservations[0].Instances[0].State.Name'
+}
+
+function instance_address() {
+    local instance=$1
+
+    aws ec2 describe-instances --instance-ids $instance | \
+    jq -r '.Reservations[0].Instances[0].PublicIpAddress'
+}
+
+function main() {
+    local instance="$1"
+    local state=$( instance_state $instance )
+
+    case $state in
+    running) ;;
+    *) die "Instance not running yet ($state)" ;;
+    esac
+
+    instance_address $instance
+}
+
+main "$@"
+
+# vim:autoindent expandtab sw=4
