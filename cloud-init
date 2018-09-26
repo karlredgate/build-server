@@ -8,6 +8,6 @@
 BUILDREPO=http://github.com/karlredgate/build-server/releases/download
 
 yum --enablerepo=epel --enablerepo=epel-testing \
-    install --quiet -y $BUILDREPO//v1.1/build-server-1.0-11.b99b686.noarch.rpm
+    install --quiet -y $BUILDREPO//v1.2/build-server-1.0-20.68e1117.noarch.rpm
 
 # vim:autoindent expandtab sw=4
