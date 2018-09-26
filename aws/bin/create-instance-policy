@@ -1,0 +1,7 @@
+
+aws iam create-instance-profile \
+        --instance-profile-name build-server \
+        --path /devops/
+
+# [--cli-input-json <value>]
+# [--generate-cli-skeleton <value>]

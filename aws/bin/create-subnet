@@ -1,0 +1,12 @@
+
+aws ec2 create-subnet \
+          --vpc-id <value> \
+          --cidr-block <value>
+
+          [--availability-zone <value>]
+          [--ipv6-cidr-block <value>]
+          [--dry-run | --no-dry-run]
+          [--cli-input-json <value>]
+          [--generate-cli-skeleton <value>]
+
+# Add a tag of "Name" to have it show up in the console

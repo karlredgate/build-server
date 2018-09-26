@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+#
+#
+
+aws iam create-role \
+        --path /devops/ \
+        --role-name build-server \
+        --assume-role-policy-document file://aws/policy/assume-role.json
+
+# [--description <value>]
+# [--cli-input-json <value>]
+# [--generate-cli-skeleton <value>]

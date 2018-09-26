@@ -1,0 +1,7 @@
+
+aws iam add-role-to-instance-profile \
+          --instance-profile-name build-server \
+          --role-name build-server
+
+# [--cli-input-json <value>]
+# [--generate-cli-skeleton <value>]

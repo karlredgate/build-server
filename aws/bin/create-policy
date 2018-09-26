@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# 
+#
+
+aws iam create-policy \
+        --policy-name build-server \
+        --path        /devops/ \
+        --policy-document file://aws/policy/build-server.json
+
+# There is a bug in using description
+# [--description] "Policy for build servers"
+# [--path <value>]
+# [--cli-input-json <value>]
+# [--generate-cli-skeleton <value>]

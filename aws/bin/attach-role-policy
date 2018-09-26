@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+#
+#
+
+aws iam attach-role-policy \
+          --role-name build-server \
+          --policy-arn arn:aws:iam::657465573824:policy/devops/build-server
+
+# [--cli-input-json <value>]
+# [--generate-cli-skeleton <value>]
