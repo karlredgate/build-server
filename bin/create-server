@@ -95,6 +95,7 @@ function main() {
 
     add_tag $id Name BuildServer
     add_tag $id Project DevOps
+    # add_tag $id Creator "$( id -F )"
 
     echo $id
 }
