@@ -27,6 +27,8 @@ Requires: bzr
 Requires: chrpath
 Requires: cmake
 Requires: crash
+Requires: createrepo
+Requires: createrepo_c
 Requires: cscope
 Requires: ctags
 Requires: dejagnu
